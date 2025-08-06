@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Tấn Sang iOS Hack Tool Pro</title>
+  <style>
+    body {
+      background: #111;
+      font-family: 'Courier New', monospace;
+      color: #eee;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #1f1f1f;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 0 15px #000;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h2 {
+      margin: 5px;
+      font-size: 24px;
+      color: #00ffd5;
+    }
+
+    .header .by {
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .tabs {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      background: linear-gradient(45deg, #ff0066, #ffcc00);
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      color: #000;
+      transition: all 0.2s ease;
+      box-shadow: 0 0 10px #ff9900;
+    }
+
+    .tab:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 15px #ffaa00;
+    }
+
+    /* Các nút mở game */
+    .game-launch {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 10px;
+    }
+
+    .game-button {
+      flex: 1;
+      background: linear-gradient(45deg, #00ffff, #0077ff);
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      color: #000;
+      transition: all 0.2s ease;
+      box-shadow: 0 0 6px #00f0ff;
+    }
+
+    .game-button:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 10px #00ffff;
+    }
+
+    .progress-section {
+      margin-top: 20px;
+      display: none;
+    }
+
+    .progress-bar {
+      width: 100%;
+      background: #333;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .progress-fill {
+      width: 0%;
+      height: 20px;
+      background: linear-gradient(90deg, #00ff99, #00ffff);
+      text-align: center;
+      color: #000;
+      font-weight: bold;
+      line-height: 20px;
+      transition: width 0.2s ease;
+    }
+
+    #log {
+      margin-top: 20px;
+      padding: 15px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid #00ffd5;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 14px;
+      white-space: pre-wrap;
+      overflow-y: auto;
+      max-height: 200px;
+      line-height: 1.5;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 12px;
+      color: #888;
+      text-align: center;
+    }
+
+    .clock {
+      font-size: 14px;
+      text-align: right;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h2>Tấn Sang iOS</h2>
+    <div class="by">by NgoTanSang</div>
+  </div>
+
+  <!-- Chức năng hack -->
+  <div class="tabs">
+    <div class="tab" onclick="trigger('aimbot')">🎯 aimbot</div>
+    <div class="tab" onclick="trigger('aimlock')">🔒 aimlock</div>
+    <div class="tab" onclick="trigger('aimhead')">🎯 aimhead</div>
+    <div class="tab" onclick="trigger('headshot')">💥 headshot</div>
+    <div class="tab" onclick="trigger('norecoil')">🔫 norecoil</div>
+  </div>
+
+  <!-- Nút mở game bên dưới -->
+  <div class="game-launch">
+    <div class="game-button" onclick="window.location.href='freefire://'">🔥 Mở Free Fire</div>
+    <div class="game-button" onclick="window.location.href='freefire://'">⚡ Mở Free Fire Max</div>
+  </div>
+
+  <div class="progress-section" id="progressSection">
+    <div>⏳ Đang xử lý yêu cầu...</div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill">0%</div>
+    </div>
+  </div>
+
+  <div id="log">Chưa bật chức năng nào...</div>
+
+  <div class="footer">
+    <div class="clock" id="clock"></div>
+  </div>
+</div>
+
+<audio id="sound" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
+
+<script>
+  const logEl = document.getElementById("log");
+  const fill = document.getElementById("progressFill");
+  const progressSection = document.getElementById("progressSection");
+  const sound = document.getElementById("sound");
+
+  function randomHex(len = 6) {
+    return Array(len).fill(0).map(() => Math.floor(Math.random()*16).toString(16)).join('');
+  }
+
+  function generateRandomCodeLines(name) {
+    const lines = [];
+    for (let i = 0; i < 30; i++) {
+      const code = `[0x${randomHex(4)}] exec > ${name}_${randomHex(3)} = 0x${randomHex(6)};`;
+      lines.push(code);
+    }
+    return lines;
+  }
+
+  function trigger(name) {
+    logEl.innerText = "🔒 Đang chờ xử lý...";
+    logEl.scrollTop = 0;
+    progressSection.style.display = "block";
+    fill.style.width = "0%";
+    fill.innerText = "0%";
+
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += Math.floor(Math.random() * 10) + 5;
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(interval);
+        fill.innerText = "100%";
+        fill.style.width = "100%";
+        sound.play();
+
+        // Hiển thị mã
+        logEl.innerText = "";
+        const lines = generateRandomCodeLines(name);
+        let i = 0;
+        const lineInterval = setInterval(() => {
+          if (i >= lines.length) {
+            clearInterval(lineInterval);
+            setTimeout(() => {
+              logEl.innerText = ` ${name} đã được bật thành công!\n`;
+              progressSection.style.display = "none";
+            }, 3000);
+          } else {
+            logEl.innerText += lines[i] + "\n";
+            logEl.scrollTop = logEl.scrollHeight;
+            i++;
+          }
+        }, 100);
+
+      } else {
+        fill.style.width = progress + "%";
+        fill.innerText = progress + "%";
+      }
+    }, 200);
+  }
+
+  function updateClock() {
+    const now = new Date();
+    document.getElementById("clock").innerText =
+      "🕒 Giờ hiện tại: " + now.toLocaleTimeString("vi-VN");
+  }
+
+  setInterval(updateClock, 1000);
+  updateClock();
+</script>
+
+</body>
+</html>
